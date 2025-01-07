@@ -23,9 +23,8 @@ import {
   fetchCourseDetails,
   updateLesson,
 } from "../../services/academic.service";
+import { showError, showSuccess } from "../../services/notification.service";
 import { Lesson } from "../../types";
-import { showSuccess, showError } from "../../services/notification.service";
-
 
 interface SafeHTMLProps {
   html: string;
@@ -153,7 +152,9 @@ const LessonModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["course"] });
       onClose();
-      showSuccess(`Lesson ${mode==="create" ? 'created' : 'edited'} successfully!`);
+      showSuccess(
+        `Lesson ${mode === "create" ? "created" : "edited"} successfully!`
+      );
     },
     onError: (error) => {
       console.error(`Failed to ${mode} lesson:`, error);
@@ -307,7 +308,8 @@ const TeacherCourseLessons = () => {
     return (
       <ErrorState
         title="Error while fetching Lessons"
-        message={(error as Error).message}
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

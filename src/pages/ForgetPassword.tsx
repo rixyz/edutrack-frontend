@@ -1,7 +1,8 @@
 import { Alert, Button, Input } from "@mantine/core";
 import React, { useState } from "react";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { isAxiosError } from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthService } from "../services/auth.service";
 
 export const ResetPasswordPage = () => {
@@ -28,7 +29,6 @@ export const ResetPasswordPage = () => {
       if (!uidb64 || !token) {
         throw new Error("Invalid reset link");
       }
-
       await AuthService.confirmResetPassword(
         uidb64,
         token,
@@ -41,9 +41,17 @@ export const ResetPasswordPage = () => {
         navigate("/login");
       }, 3000);
     } catch (error) {
-      console.error(error);
+      if (isAxiosError(error) && error.response && error.response.data.errors) {
+        setMessage(
+          error.response?.data.errors[0]["password"] ||
+            "Failed to reset password"
+        );
+      } else if (isAxiosError(error) && error.response) {
+        setMessage(error.response.data.message || "Failed to reset password");
+      } else {
+        setMessage("Failed to reset password. Please try again.");
+      }
       setStatus("error");
-      setMessage("Failed to reset password. Please try again.");
     }
   };
 
@@ -104,11 +112,18 @@ export const ResetPasswordPage = () => {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full space-y-3"
             disabled={status === "loading"}
           >
             {status === "loading" ? "Resetting..." : "Reset Password"}
           </Button>
+          <Link
+            to={"/login"}
+            className="w-full text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 
+                           dark:hover:text-blue-300 text-center transition-colors duration-200"
+          >
+            Back to login
+          </Link>
         </form>
       </div>
     </div>

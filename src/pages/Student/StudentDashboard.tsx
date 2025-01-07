@@ -1,6 +1,5 @@
 import { Card, Grid, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import {
   BarElement,
   CategoryScale,
@@ -47,7 +46,7 @@ const PerformanceIndicator: React.FC<PerformanceIndicatorProps> = ({
   const getPerformanceColor = (val: number) => {
     if (val > 90)
       return "text-green-600 bg-green-100 dark:text-green-300 dark:bg-green-900";
-    if (val > 80)
+    if (val > 60)
       return "text-yellow-600 bg-yellow-100 dark:text-yellow-300 dark:bg-yellow-900";
     return "text-red-600 bg-red-100 dark:text-red-300 dark:bg-red-900";
   };
@@ -93,16 +92,16 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           (subject) => subject.attendance_impact.rate
         ),
         backgroundColor: Object.values(subjectData).map((subject) =>
-          subject.attendance_impact.rate > 90
+          subject.attendance_impact.rate > 85
             ? "rgba(34, 197, 94, 0.7)"
-            : subject.attendance_impact.rate > 80
+            : subject.attendance_impact.rate > 50
             ? "rgba(234, 179, 8, 0.7)"
             : "rgba(244, 63, 94, 0.7)"
         ),
         borderColor: Object.values(subjectData).map((subject) =>
-          subject.attendance_impact.rate > 90
+          subject.attendance_impact.rate > 85
             ? "rgba(34, 197, 94, 1)"
-            : subject.attendance_impact.rate > 80
+            : subject.attendance_impact.rate > 50
             ? "rgba(234, 179, 8, 1)"
             : "rgba(244, 63, 94, 1)"
         ),
@@ -168,7 +167,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
   return (
     <div className="min-h-screen p-6 transition-colors duration-300 dark:bg-gray-900 dark:text-white bg-gray-50">
       <Grid gutter="xl">
-        <Grid.Col span={{ base: 12, md: 6}}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Card
             shadow="md"
             padding="lg"
@@ -186,7 +185,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           </Card>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 6}}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Card
             shadow="md"
             padding="lg"
@@ -388,16 +387,9 @@ const StudentDashboard: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Student Information"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Student Information"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

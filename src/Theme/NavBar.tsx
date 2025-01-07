@@ -1,6 +1,5 @@
 import { Badge, NavLink, rem, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import {
   Bell,
   Book,
@@ -179,16 +178,9 @@ const NavBar = ({ toggleHeader }: { toggleHeader: () => void }) => {
   if (isUserError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(userError) && userError.response?.data.error
-            ? userError.response?.data.error
-            : "Error while fetching user details"
-        }
-        message={
-          isAxiosError(userError) && userError.response?.data.message
-            ? userError.response?.data.message
-            : userError.message
-        }
+        title="Error while fetching user details"
+        message={userError.message}
+        error={userError}
         variant="full"
       />
     );
@@ -302,7 +294,7 @@ const NavBar = ({ toggleHeader }: { toggleHeader: () => void }) => {
           }
           onClick={() => {
             localStorage.clear();
-            navigate("/");
+            navigate("/login");
           }}
           variant="subtle"
           color="red"

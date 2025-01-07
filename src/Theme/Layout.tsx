@@ -9,7 +9,7 @@ const Layout = () => {
 
   return (
     <AppShell
-      header={{ height: 57 }}
+      header={{ height: 63 }}
       navbar={{
         width: 270,
         breakpoint: "sm",

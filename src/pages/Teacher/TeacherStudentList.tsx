@@ -1,6 +1,5 @@
 import { Card, Grid, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import {
   AlertTriangle,
   Book,
@@ -11,8 +10,8 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
-import { getStudentPredictionList } from "../../services/evaluations.service";
 import PageHeader from "../../components/PageHeader";
+import { getStudentPredictionList } from "../../services/evaluations.service";
 
 const StudentPerformanceDashboard: React.FC = () => {
   const [expandedRows, setExpandedRows] = useState<{
@@ -70,12 +69,9 @@ const StudentPerformanceDashboard: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Student List"
-        }
-        message={isAxiosError(error) && error.response?.data.message}
+        title="Error while fetching Student list"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

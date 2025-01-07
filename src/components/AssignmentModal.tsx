@@ -67,7 +67,7 @@ export const AssignmentModal = ({
 
     return subjects.map((subject) => ({
       value: subject.id.toString(),
-      label: `${subject.name} (${subject.code})`,
+      label: `${subject.semester} ➤ ${subject.name} (${subject.code})`,
     }));
   }, [teacherDetail]);
 

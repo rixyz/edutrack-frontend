@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import { useSearchParams } from "react-router-dom";
 import { ErrorState, LoadingGrid } from "../components/LoadingAndError";
 import UserCard from "../components/UserCard";
@@ -27,16 +26,9 @@ const UserSearchPage: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Users"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Users"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

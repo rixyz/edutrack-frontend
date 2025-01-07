@@ -30,6 +30,7 @@ const ProfileCard = () => {
     queryKey: ["userDetails"],
     queryFn: getUserDetails,
   });
+
   if (userDataLoading)
     return (
       <div className="flex justify-center items-center h-screen dark:bg-gray-900">
@@ -149,11 +150,6 @@ const PerformanceOverview = () => (
           value: "85%",
           icon: <Clock className="text-blue-500" size={20} />,
           trend: "up",
-        },
-        {
-          title: "Pending Assignments",
-          value: "3",
-          trend: "down",
         },
       ].map((stat, index) => (
         <div

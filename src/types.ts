@@ -1,5 +1,5 @@
 export type ApiResponse<T> = {
-  error: string[] | string;
+  errors: string[] | string;
   status: string;
   message: string;
   data: T;
@@ -120,32 +120,6 @@ export interface Message {
 }
 
 // Evaluations
-export type SubjectPerformance = {
-  subject_id: number;
-  subject_name: string;
-  current_average: number;
-  attendance_impact: {
-    rate: number;
-    impact: string;
-    description: string;
-  };
-  assignment_completion: number;
-  predicted_score_range: {
-    predicted_score: number;
-    range: {
-      lower: number;
-      upper: number;
-    };
-  };
-  improvement_potential: {
-    potential_improvement: number;
-    recommendations: Array<{
-      area: string;
-      recommendation: string;
-      impact: string;
-    }>;
-  };
-};
 
 export type ConfidenceFactor = {
   level: "High" | "Low" | "Medium";

@@ -1,18 +1,17 @@
 import { Button, Card, Progress } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import { CheckCircle, Clock, Edit, Plus, Trash2, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AssignmentModal } from "../../components/AssignmentModal";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal";
 import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
+import PageHeader from "../../components/PageHeader";
 import {
   deleteAssignment,
   fetchAssignments,
 } from "../../services/academic.service";
 import { Assignment } from "../../types";
-import PageHeader from "../../components/PageHeader";
 
 const AssignmentCard = ({
   assignment,
@@ -140,16 +139,9 @@ const TeacherAssignment = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Assignments"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Assignments"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

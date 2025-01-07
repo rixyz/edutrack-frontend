@@ -38,8 +38,8 @@ const List = () => {
           <div className="flex items-center px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
             <div className="flex-grow">
               <h6 className="text-sm font-medium text-gray-900 dark:text-white">
-                {isAxiosError(error) && error.response?.data.error
-                  ? error.response?.data.error
+                {isAxiosError(error) && error.response?.data.errors
+                  ? error.response?.data.errors
                   : error.name}
               </h6>
               <p className="text-xs text-gray-500 dark:text-gray-400">

@@ -7,6 +7,8 @@ RUN npm install -g pnpm && pnpm install
 
 COPY . .
 
+COPY .docker.env .env
+
 RUN pnpm run build
 
 FROM nginx:stable-alpine

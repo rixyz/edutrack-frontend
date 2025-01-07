@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import React from "react";
 import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
 import PageHeader from "../../components/PageHeader";
@@ -71,16 +70,9 @@ const StudentResult: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Result"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Results"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );
@@ -115,7 +107,7 @@ const StudentResult: React.FC = () => {
                 >
                   <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
-                    Semester {semester}
+                      Semester {semester}
                     </h3>
                   </div>
 

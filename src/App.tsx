@@ -49,8 +49,6 @@ function App() {
               path="/forget_password/:uid/:token"
               element={<ForgotPassword />}
             />
-          </Routes>
-          <Routes>
             <Route path="/" element={<Layout />}>
               <Route path="users/search" element={<UserSearchPage />} />
               <Route

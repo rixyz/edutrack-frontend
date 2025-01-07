@@ -9,7 +9,6 @@ import {
   Text,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import { Book, Clock } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -102,7 +101,9 @@ const FeaturedCourses = () => {
 
   const uniqueSubjects = isPending
     ? []
-    : Array.from(new Set(response?.data.map((course) => course.subject_data.name)));
+    : Array.from(
+        new Set(response?.data.map((course) => course.subject_data.name))
+      );
 
   const uniqueTags = isPending
     ? []
@@ -129,16 +130,9 @@ const FeaturedCourses = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Courses"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Coursess"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

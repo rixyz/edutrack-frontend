@@ -19,32 +19,32 @@ const examData: ExamRecord[] = [
   {
     subjectName: "Object Oriented Programming",
     subjectCode: "CCP313",
-    date: "2024-02-02T09:00:00+05:45",
-    location: "Hall A",
+    date: "2025-02-02T09:00:00+05:45",
+    location: "Room 201",
   },
   {
     subjectName: "Database System",
     subjectCode: "CDS300",
-    date: "2024-02-02T11:00:00+05:45",
-    location: "Hall B",
+    date: "2025-02-02T09:00:00+05:45",
+    location: "Room 202",
   },
   {
     subjectName: "Human Computer Interaction",
     subjectCode: "CHC401",
-    date: "2024-02-02T14:00:00+05:45",
-    location: "Hall C",
+    date: "2025-02-02T09:00:00+05:45",
+    location: "Room 203",
   },
   {
     subjectName: "Operating Systems",
     subjectCode: "COS305",
-    date: "2024-02-02T15:30:00+05:45",
-    location: "Room 201",
+    date: `${new Date()}`,
+    location: "Room 204",
   },
   {
     subjectName: "Information Literacy And Research Skills",
     subjectCode: "UCS105",
     date: "2024-02-02T17:00:00+05:45",
-    location: "Lab 1",
+    location: "Training Hall",
   }
 ];
 
@@ -59,12 +59,12 @@ const StudentRoutine: React.FC = () => {
   const getExamStatus = (examDate: string) => {
     const now = new Date();
     const examDateTime = new Date(examDate);
-    
-    if (now > examDateTime) {
-      return "Completed";
-    } else if (now.toDateString() === examDateTime.toDateString()) {
+    if (now.toLocaleDateString() === examDateTime.toLocaleDateString()) {
       return "Today";
-    } else {
+    }
+    else if (now > examDateTime) {
+      return "Completed";
+    }  else {
       return "Upcoming";
     }
   };
@@ -107,14 +107,39 @@ const StudentRoutine: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Completed":
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900/50 dark:text-gray-300";
+        return {
+          bg: "bg-gray-100 dark:bg-gray-800",
+          text: "text-gray-600 dark:text-gray-400",
+          ring: "ring-gray-500/30 dark:ring-gray-400/30",
+          hover: "hover:bg-gray-200 dark:hover:bg-gray-700"
+        };
       case "Today":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300";
+        return {
+          bg: "bg-yellow-100 dark:bg-yellow-900/30",
+          text: "text-yellow-700 dark:text-yellow-500",
+          ring: "ring-yellow-500/30 dark:ring-yellow-400/30",
+          hover: "hover:bg-yellow-200 dark:hover:bg-yellow-900/40"
+        };
       case "Upcoming":
-        return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300";
+        return {
+          bg: "bg-green-100 dark:bg-green-900/30",
+          text: "text-green-700 dark:text-green-500",
+          ring: "ring-green-500/30 dark:ring-green-400/30",
+          hover: "hover:bg-green-200 dark:hover:bg-green-900/40"
+        };
       default:
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300";
+        return {
+          bg: "bg-blue-100 dark:bg-blue-900/30",
+          text: "text-blue-700 dark:text-blue-500",
+          ring: "ring-blue-500/30 dark:ring-blue-400/30",
+          hover: "hover:bg-blue-200 dark:hover:bg-blue-900/40"
+        };
     }
+  };
+
+  const getRowStyles = (status: string) => {
+    const colors = getStatusColor(status);
+    return `transition-colors duration-200 ${colors.hover}`;
   };
 
   return (
@@ -163,14 +188,11 @@ const StudentRoutine: React.FC = () => {
                 {data.map((exam, index) => {
                   const status = getExamStatus(exam.date);
                   const { date, time } = formatDateTime(exam.date);
+                  const colors = getStatusColor(status);
                   return (
                     <tr
                       key={exam.subjectCode + index}
-                      className={`${
-                        index % 2 === 0
-                          ? "bg-white dark:bg-gray-800"
-                          : "bg-gray-50 dark:bg-gray-700/50"
-                      } hover:bg-gray-100 dark:hover:bg-gray-600`}
+                      className={getRowStyles(status)}
                     >
                       <td className="px-6 py-4">{exam.subjectName}</td>
                       <td className="px-6 py-4">{exam.subjectCode}</td>
@@ -179,7 +201,7 @@ const StudentRoutine: React.FC = () => {
                       <td className="px-6 py-4">{exam.location}</td>
                       <td className="px-6 py-4">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium ring-1 ring-inset ${colors.bg} ${colors.text} ${colors.ring}`}
                         >
                           {status}
                         </span>

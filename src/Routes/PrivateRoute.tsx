@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { ErrorState, LoadingGrid } from "../components/LoadingAndError";
@@ -45,12 +44,9 @@ function PrivateRoute<T>({ component, type, ...rest }: PrivateRouteProps<T>) {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while authroizing"
-        }
-        message={isAxiosError(error) && error.response?.data.message}
+        title="Error while authroizing user"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

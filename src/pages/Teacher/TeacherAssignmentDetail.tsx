@@ -22,7 +22,6 @@ import {
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { isAxiosError } from "axios";
 import { AssignmentModal } from "../../components/AssignmentModal";
 import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
 import {
@@ -35,8 +34,8 @@ import { StudentDetail, Submission } from "../../types";
 
 import { FileCheck, FileX } from "lucide-react";
 import React from "react";
+import { showError, showSuccess } from "../../services/notification.service";
 import { getStudentBySemester } from "../../services/user.service";
-import { showSuccess, showError } from "../../services/notification.service";
 
 const StudentSubmissionList = ({
   students,
@@ -85,7 +84,7 @@ const StudentSubmissionList = ({
               color="red"
               className="dark:bg-red-900/50 dark:text-red-200"
             >
-              Not Submitted: {notSubmitted.length} 
+              Not Submitted: {notSubmitted.length}
             </Badge>
           </Group>
         </div>
@@ -247,16 +246,9 @@ const AssignmentDetails = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Assignment Detail"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Assignment Detail"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

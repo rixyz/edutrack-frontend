@@ -11,15 +11,14 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
 import {
   deleteSubmission,
   fetchAssignmentDetails,
   submitAssignmentSubmission,
 } from "../../services/academic.service";
 import { API_URL } from "../../services/api";
-import { isAxiosError } from "axios";
-import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
-import { showSuccess, showError } from "../../services/notification.service";
+import { showError, showSuccess } from "../../services/notification.service";
 
 const AssignmentSubmissionPage: React.FC = () => {
   const { assignmentID } = useParams<{ assignmentID: string }>();
@@ -94,16 +93,9 @@ const AssignmentSubmissionPage: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Assignment"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Assignment Detail"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

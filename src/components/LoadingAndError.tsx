@@ -1,4 +1,5 @@
 import { Alert, Card, Text } from "@mantine/core";
+import { isAxiosError } from "axios";
 import { AlertCircle, Loader } from "lucide-react";
 import React from "react";
 
@@ -106,12 +107,24 @@ export const ErrorState = ({
   message,
   variant = "default",
   action,
+  error,
 }: {
   title?: string;
   message: string;
   variant?: "default" | "compact" | "full";
   action?: React.ReactNode;
+  error?: Error;
 }) => {
+  message =
+    error && isAxiosError(error) && error.response?.data.message
+      ? error.response?.data.message
+      : message;
+
+  title =
+    error && isAxiosError(error) && error.response?.data.errors
+      ? error.response?.data.errors
+      : title;
+
   if (variant === "compact") {
     return (
       <Alert

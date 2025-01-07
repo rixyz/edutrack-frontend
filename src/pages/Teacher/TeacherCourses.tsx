@@ -8,7 +8,6 @@ import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
 import { deleteCourse, fetchCourses } from "../../services/academic.service";
 import { Course } from "../../types";
 
-import { isAxiosError } from "axios";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 
@@ -103,16 +102,9 @@ const TeacherCourses = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Courses"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Courses"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

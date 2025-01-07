@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import { MessageCircle } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -134,22 +133,15 @@ const ChatRoom: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Messages"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Messages"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );
   }
 
-  if(!receiver) {
+  if (!receiver) {
     return (
       <ErrorState
         title={"Error while fetching Messages"}
@@ -158,7 +150,6 @@ const ChatRoom: React.FC = () => {
       />
     );
   }
-  
   return (
     <div className="min-h-screen p-6 transition-colors duration-300 dark:bg-gray-900 dark:text-white bg-gray-50">
       <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 shadow-lg rounded-xl overflow-hidden">
@@ -196,14 +187,20 @@ const ChatRoom: React.FC = () => {
                 } transition-all duration-300`}
               >
                 <div
-                  className={`max-w-[70%] p-3 rounded-xl shadow-sm ${
+                  className={`max-w-[70%] p-3 rounded-xl shadow-sm relative ${
                     message.sender === senderId
                       ? "bg-blue-500 dark:bg-blue-700 text-white"
                       : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border dark:border-gray-600"
-                  } relative`}
+                  }`}
                 >
                   <div className="break-words">{message.content}</div>
-                  <div className="text-xs text-gray-400 dark:text-gray-300 mt-1 text-right">
+                  <div
+                    className={`text-xs mt-1 text-right ${
+                      message.sender === senderId
+                        ? "text-gray-200 dark:text-gray-300"
+                        : "text-gray-400 dark:text-gray-300"
+                    }`}
+                  >
                     {formattedDate}
                   </div>
                 </div>

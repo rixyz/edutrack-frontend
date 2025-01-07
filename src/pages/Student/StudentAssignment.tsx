@@ -1,20 +1,14 @@
 import { Badge, Button, Card, Modal, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
-import {
-  ArrowRightIcon,
-  CalendarClock,
-  ClipboardCheck,
-} from "lucide-react";
+import { ArrowRightIcon, CalendarClock, ClipboardCheck } from "lucide-react";
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ErrorState, LoadingGrid } from "../../components/LoadingAndError";
+import PageHeader from "../../components/PageHeader";
 import { fetchAssignments } from "../../services/academic.service";
 import { Assignment } from "../../types";
-import PageHeader from "../../components/PageHeader";
 import { getAssignmentStatus } from "../../utils";
-
 
 const AssignmentCard: React.FC<{ assignment: Assignment }> = ({
   assignment,
@@ -102,16 +96,9 @@ const AssignmentsSection: React.FC = () => {
   if (isError) {
     return (
       <ErrorState
-        title={
-          isAxiosError(error) && error.response?.data.error
-            ? error.response?.data.error
-            : "Error while fetching Assignments"
-        }
-        message={
-          isAxiosError(error) && error.response?.data.message
-            ? error.response?.data.message
-            : error.message
-        }
+        title="Error while fetching Assignments"
+        message={error.message}
+        error={error}
         variant="full"
       />
     );

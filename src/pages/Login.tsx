@@ -151,7 +151,7 @@ interface LoginForm {
 
 const Login: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [role, setRole] = useState<"student" | "teacher">("student");
+  const [role, setRole] = useState<"student" | "teacher">("teacher");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -178,8 +178,8 @@ const Login: React.FC = () => {
       );
     } catch (error) {
       setErrorMsg(
-        isAxiosError(error) && error.response?.data.error
-          ? error.response?.data.error
+        isAxiosError(error) && error.response?.data.errors
+          ? error.response?.data.errors
           : "Authentication failed"
       );
     } finally {
